@@ -1,0 +1,24 @@
+#!/bin/sh
+
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
+cd "$SCRIPTPATH"
+
+echo "ln -h"
+../bin/ln.js -h
+if [ "$?" != "0" ]; then exit 1; fi
+
+echo "ln -V"
+../bin/ln.js -V
+if [ "$?" != "0" ]; then exit 1; fi
+
+echo "ln"
+../bin/ln.js
+if [ "$?" != "1" ]; then exit 1; fi
+
+echo "ln -z"
+../bin/ln.js -z
+if [ "$?" != "1" ]; then exit 1; fi
+
+echo "done"
