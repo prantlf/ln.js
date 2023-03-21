@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/prantlf/ln.js/compare/v2.0.0...v2.0.1) (2023-03-21)
+
+
+### Bug Fixes
+
+* Fix the generation of the bin script ([4214d92](https://github.com/prantlf/ln.js/commit/4214d923824876139bd6790ea19ca63718116985))
+
 # [2.0.0](https://github.com/prantlf/ln.js/compare/v1.0.0...v2.0.0) (2023-03-21)
 
 

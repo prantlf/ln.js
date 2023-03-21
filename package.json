@@ -1,7 +1,7 @@
 {
   "name": "@unixcompat/ln.js",
   "description": "Makes hard or symbolic links (symlinks) between files or directories like the \"ln\" command.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/prantlf/ln.js#readme",
   "author": {
     "name": "Ferdinand Prantl",
