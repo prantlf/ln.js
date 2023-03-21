@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/prantlf/ln.js/compare/v2.0.1...v2.0.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* Use .mjs extension to enforce the module type ([b4cd809](https://github.com/prantlf/ln.js/commit/b4cd80951fd2a30bcb6911cc481a929a396b4077))
+
 ## [2.0.1](https://github.com/prantlf/ln.js/compare/v2.0.0...v2.0.1) (2023-03-21)
 
 
