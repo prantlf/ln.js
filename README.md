@@ -9,7 +9,7 @@ Makes hard or symbolic links (symlinks) between files or directories like the `l
 
 There are multi-platform file-system commands compatible with `ln` from UN*X implemented for Node.js in JavaScript, like [symlink-dir] or [ln-cli], but they have different interface and different behaviour than the `ln` command. Instead of reusing the knowledge of the `ln` command, you would have to learn their new interface. This project aims to provide the well-known interface of the `ln` command.
 
-This package offers only command-line interface, because programmatic interface is provided by [`link`] and [`symlink`] from [node:fs]. See also other commands compatible with their counterparts from UN*X - [cat.js], [cp.js], [mkdir.js] and [rm.js].
+This package offers only command-line interface, because programmatic interface is provided by [`link`] and [`symlink`] from [node:fs]. See also other commands compatible with their counterparts from UN*X - [cat.js], [cp.js], [mkdir.js], [mv.js] and [rm.js].
 
 ## Synopsis
 
@@ -19,17 +19,19 @@ The following scripts from `package.json` won't work on Windows:
     mkdir -p dist
     cat src/umd-prolog.txt src/code.js src/umd-epilog.txt > dist/index.umd.js
     cp src/index.d.ts dist
+    mv LICENSE doc
     ln -s ../src src
 
 Replace them with the following ones, which run on any operating system which is supported by Node.js:
 
-    rm.js -rf dist
-    mkdir.js -p dist
-    cat.js src/umd-prolog.txt src/code.js src/umd-epilog.txt > dist/index.umd.js
-    ln-j src/index.d.ts dist
+    rm-j -rf dist
+    mkdir-j -p dist
+    cat-j src/umd-prolog.txt src/code.js src/umd-epilog.txt > dist/index.umd.js
+    cp-j src/index.d.ts dist
+    mv-j LICENSE doc
     ln-j -s ../src src
 
-Notice that the only difference is the suffix `.js` or `-j` behind the command names.
+Notice that the only difference is the suffix `-j` behind the command names.
 
 ## Installation
 
@@ -120,10 +122,11 @@ Licensed under the MIT license.
 [Yarn]: https://yarnpkg.com/
 [symlink-dir]: https://www.npmjs.com/package/symlink-dir
 [ln-cli]: https://www.npmjs.com/package/ln-cli
-[mkdir.js]: https://www.npmjs.com/package/@unixcompat/mkdir.js
-[rm.js]: https://www.npmjs.com/package/@unixcompat/rm.js
 [cat.js]: https://www.npmjs.com/package/@unixcompat/cat.js
 [cp.js]: https://www.npmjs.com/package/@unixcompat/cp.js
+[mkdir.js]: https://www.npmjs.com/package/@unixcompat/mkdir.js
+[mv.js]: https://www.npmjs.com/package/@unixcompat/mv.js
+[rm.js]: https://www.npmjs.com/package/@unixcompat/rm.js
 [POSIX documentation]: https://man7.org/linux/man-pages/man1/ln.1p.html
 [Linux implementation]: https://man7.org/linux/man-pages/man1/ln.1.html
 [`link`]: https://nodejs.org/api/fs.html#fslinkexistingpath-newpath-callback
