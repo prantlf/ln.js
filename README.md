@@ -26,10 +26,10 @@ Replace them with the following ones, which run on any operating system which is
     rm.js -rf dist
     mkdir.js -p dist
     cat.js src/umd-prolog.txt src/code.js src/umd-epilog.txt > dist/index.umd.js
-    ln.js src/index.d.ts dist
-    ln.js -s ../src src
+    ln-j src/index.d.ts dist
+    ln-j -s ../src src
 
-Notice that the only difference is the suffix `.js` behind the command names.
+Notice that the only difference is the suffix `.js` or `-j` behind the command names.
 
 ## Installation
 
@@ -45,7 +45,7 @@ $ yarn add -D @unixcompat/ln.js
 
 See also `man ln` for the original [POSIX documentation] or for the extended [Linux implementation].
 
-    Usage: ln.js [-fjLnsv] [--] src... dest
+    Usage: ln-j [-fjLnsv] [--] src... dest
 
     Options:
       -c|--cwd <dir>              directory to start looking for the source files
@@ -62,8 +62,8 @@ See also `man ln` for the original [POSIX documentation] or for the extended [Li
       -h|--help                   print usage instructions
 
     Examples:
-      $ ln.js src/prog.js dist/prog.js
-      $ ln.js -j jones smith /home/nick/clients
+      $ ln-j src/prog.js dist/prog.js
+      $ ln-j -j jones smith /home/nick/clients
 
 ## Differences
 

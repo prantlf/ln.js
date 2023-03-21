@@ -13,7 +13,7 @@ function getPackage() {
 function help() {
   console.log(`${getPackage().description}
 
-Usage: ln.js [-fjLnsv] [--] src... [dest]
+Usage: ln-j [-fjLnsv] [--] src... [dest]
 
 Options:
   -c|--cwd <dir>              directory to start looking for the source files
@@ -30,8 +30,8 @@ Options:
   -h|--help                   print usage instructions
 
 Examples:
-  $ ln.js src/prog.js dist/prog.js
-  $ ln.js -j jones smith /home/nick/clients`)
+  $ ln-j src/prog.js dist/prog.js
+  $ ln-j -j jones smith /home/nick/clients`)
 }
 
 const { argv } = process
