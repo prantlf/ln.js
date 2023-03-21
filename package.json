@@ -35,7 +35,7 @@
   "scripts": {
     "lint": "denolint",
     "check": "test/run",
-    "test": "denolint && test/run"
+    "test": "denolint && c8 test/run"
   },
   "c8": {
     "check-coverage": true,
