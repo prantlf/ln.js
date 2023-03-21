@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { access, link, rm, stat, symlink } from 'fs/promises'
+import { access, link, realpath, rm, stat, symlink } from 'fs/promises'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { basename, dirname, join } from 'path'
@@ -68,6 +68,7 @@ for (let i = 2, l = argv.length; i < l; ++i) {
         case 'n':
           dereferenceDest = !flag
           return
+        /* c8 ignore next 3 */
         case 'dereference':
           dereferenceDest = flag
           return
@@ -111,41 +112,9 @@ if (args.length < 1) {
 }
 if (args.length === 1) args.push('.')
 
-let arg
-const formatMessage = ({ code, message }) => {
-  /* c8 ignore next 2 */
-  if (code === 'EISDIR' || code === 'ERR_FS_EISDIR') {
-    message = `EISDIR: "${arg}" is a directory`
-  } else if (code === 'EEXIST' || code === 'ERR_FS_CP_EEXIST') {
-    message = `EEXIST: "${arg}" already exists`
-  /* c8 ignore next 5 */
-  } else if (code === 'EINVAL' || code === 'ERR_FS_CP_EINVAL') {
-    message = `EINVAL: "${arg}" is invalid`
-  } else if (code === 'ENOENT') {
-    message = `ENOENT: "${arg}" does not exist`
-  }
-  return message
-}
-
 try {
-  const paths = []
-  const patterns = args
-    .slice(0, args.length - 1)
-    .filter(src => {
-      if (src.includes('*') || src.includes('?')) return true
-      paths.push(src)
-    })
-  if (patterns.length) {
-    const glob = (await import('fast-glob')).default
-    if (verbose) console.log(patterns.join('\n'))
-    paths.push(...await glob(patterns, {
-      cwd, extglob: true, dot: true, onlyFiles: false,
-      followSymbolicLinks: !!dereferenceSrc
-    }))
-  }
-
   const dest = args[args.length - 1]
-  if (paths.length > 2 && !(await stat(dest)).isDirectory()) {
+  if (args.length > 2 && !(await stat(dest)).isDirectory()) {
     throw new Error('link name (dest) has to be a directory')
   }
   let destDir
@@ -156,6 +125,23 @@ try {
     if (err.code !== 'ENOENT') throw err
   }
 
+  const paths = []
+  const files = []
+  const patterns = args
+    .slice(0, args.length - 1)
+    .filter(src => {
+      if (src.includes('*') || src.includes('?')) return true
+      files.push(src)
+    })
+  if (patterns.length) {
+    const glob = (await import('fast-glob')).default
+    if (verbose) console.log(patterns.join('\n'))
+    paths.push(...await glob(patterns, {
+      cwd, extglob: true, dot: true, onlyFiles: false,
+      followSymbolicLinks: !!dereferenceSrc
+    }))
+  }
+
   const linkOne = async (srcPath, destPath) => {
     try {
       await access(destPath)
@@ -164,7 +150,6 @@ try {
     } catch (err) {
       if (err.code !== 'ENOENT') throw err
     }
-    arg = srcPath
     if (symbolic) {
       const type = junctions ? 'junction' : undefined
       await symlink(srcPath, destPath, type)
@@ -173,15 +158,22 @@ try {
     }
   }
 
-  for (const path of paths) {
-    if (verbose) console.log(path)
-    if (dry) continue
-    const srcReal = dereferenceSrc ? await realpath(path) : path
-    const destPath = destDir && dereferenceDest && !physical ?
-      join(dest, basename(path)) : dest
-    await linkOne(srcReal, destPath)
+  const linkAll = async (paths, keepPath) => {
+    for (const path of paths) {
+      if (verbose) console.log(path)
+      if (dry) continue
+      const srcPath = cwd ? join(cwd, path) : path
+      const srcReal = dereferenceSrc ? await realpath(srcPath) : srcPath
+      const destPath = keepPath ? join(dest, path) :
+        destDir && dereferenceDest && !physical ?
+        join(dest, basename(path)) : dest
+      await linkOne(srcReal, destPath)
+    }
   }
-} catch(err) {
-  console.error(formatMessage(err))
+
+  await linkAll(files, false)
+  await linkAll(paths, true)
+} catch({ message }) {
+  console.error(message)
   process.exitCode = 1
 }

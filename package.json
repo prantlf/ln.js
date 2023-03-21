@@ -27,7 +27,7 @@
   },
   "type": "module",
   "bin": {
-    "ln-j": "bin/ln.js"
+    "ln-j": "bin/ln.mjs"
   },
   "files": [
     "bin"
