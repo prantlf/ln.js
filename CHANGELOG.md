@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/prantlf/ln.js/compare/v2.0.2...v2.0.3) (2023-04-26)
+
+
+### Bug Fixes
+
+* Remove even a directory if the symlink creation is forced ([5a2cd7b](https://github.com/prantlf/ln.js/commit/5a2cd7ba5fc11edf949d2e111b82f84374c27920))
+
 ## [2.0.2](https://github.com/prantlf/ln.js/compare/v2.0.1...v2.0.2) (2023-03-21)
 
 
