@@ -146,7 +146,7 @@ try {
     try {
       await access(destPath)
       if (!force) throw new Error(`EEXIST: "${destPath}" already exists`)
-      await rm(destPath)
+      await rm(destPath, { recursive: true, force: true })
     } catch (err) {
       if (err.code !== 'ENOENT') throw err
     }
